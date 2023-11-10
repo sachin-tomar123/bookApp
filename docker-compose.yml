@@ -1,0 +1,36 @@
+version: '3.3'
+services:
+  # API Service
+  api:
+    container_name: ${PROJECT_NAME}-api
+    restart: unless-stopped
+    build:
+      context: ./docker  # Assuming API Dockerfile is in the 'api' directory
+      dockerfile: Dockerfile
+    ports:
+      - ${API_PORT}:3000  # Assuming the API service runs on port 8080
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - api-network
+    depends_on:
+      - postgres
+
+  # PostgreSQL Service
+  postgres:
+    container_name: ${PROJECT_NAME}-postgres
+    image: postgres:latest
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-booksdb}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+    ports:
+      - ${POSTGRES_PORT}:5432  # Assuming you want to expose the PostgreSQL port
+    networks:
+      - api-network
+
+# Docker Networks
+networks:
+  api-network:
+    driver: bridge

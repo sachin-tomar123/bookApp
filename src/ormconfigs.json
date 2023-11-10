@@ -1,0 +1,11 @@
+
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "postgres",
+  "password": "codiant",
+  "database": "books",
+  "entities": ["dist/**/*.dto{.ts,.js}"],
+  "synchronize": true,
+}
